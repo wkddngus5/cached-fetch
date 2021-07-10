@@ -1,7 +1,7 @@
 type Method = 'GET';
 
 export type FetchParam = {
-  url: string;
+  uri: string;
   method: Method;
   headers: { [key: string]: unknown };
 };

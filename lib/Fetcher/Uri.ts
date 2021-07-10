@@ -1,5 +1,5 @@
-class Url {
-  readonly url: string;
+class Uri {
+  readonly uri: string;
 
   readonly path: string;
 
@@ -7,9 +7,9 @@ class Url {
 
   readonly params: {[key: string]: string} = {};
 
-  constructor(url: string) {
-    this.url = url;
-    [this.path, this.queryString] = this.url.split('?');
+  constructor(uri: string) {
+    this.uri = uri;
+    [this.path, this.queryString] = this.uri.split('?');
     this.queryString?.split('&').forEach((eachParamString: string) => {
       const [key, value] = eachParamString.split('=');
       this.params[key] = value;
@@ -17,4 +17,4 @@ class Url {
   }
 }
 
-export default Url;
+export default Uri;

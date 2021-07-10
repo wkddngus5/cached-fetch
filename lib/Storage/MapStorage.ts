@@ -18,6 +18,10 @@ class MapStorage extends Storage<Map<string, StoredItem>> {
   setItem(key: string, item: StoredItem): void {
     this.core.set(key, cloneDeep(item));
   }
+
+  removeItem(key: string) {
+    this.core.delete(key);
+  }
 }
 
 export default MapStorage;
