@@ -1,4 +1,4 @@
-import StoredItem from '../StoredItem';
+import CachedItem from '../CachedItem';
 import Storage from './Storage';
 
 class SessionStorage extends Storage {
@@ -12,19 +12,19 @@ class SessionStorage extends Storage {
     this.core = sessionStorage;
   }
 
-  getItem(key: string): StoredItem {
-    const stored = this.core.getItem(key);
-    if (typeof stored !== 'string') {
+  getItem(key: string): CachedItem {
+    const cached = this.core.getItem(key);
+    if (typeof cached !== 'string') {
       return null;
     }
-    const storedItem = JSON.parse(stored);
-    if (!storedItem.data || !storedItem.expiredAt) {
+    const cachedItem = JSON.parse(cached);
+    if (!cachedItem.data || !cachedItem.expiredAt) {
       return null;
     }
-    return storedItem;
+    return cachedItem;
   }
 
-  setItem(key: string, item: StoredItem) {
+  setItem(key: string, item: CachedItem) {
     this.core.setItem(key, JSON.stringify(item));
   }
 
