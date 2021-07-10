@@ -1,21 +1,21 @@
 import Fetcher, { FetchParam } from './Fetcher';
-import Url from './Url';
+import Url from './Uri';
 
-class SelfFetcher extends Fetcher {
+class TestFetcher extends Fetcher {
   core: { request?: FetchParam; response?: unknown } = {};
 
   fetch(fetchParam: FetchParam): Promise<unknown> {
-    const url = new Url(fetchParam.url);
+    const uri = new Url(fetchParam.uri);
 
     this.core = {
       request: fetchParam,
       response: {
         ok: true,
-        url: url.url,
+        uri: uri.uri,
         redirected: false,
         status: 200,
         ...Object.fromEntries(
-          Object.entries(url.params).map(([key, value]) => [
+          Object.entries(uri.params).map(([key, value]) => [
             key,
             JSON.parse(value),
           ]),
@@ -26,4 +26,4 @@ class SelfFetcher extends Fetcher {
   }
 }
 
-export default SelfFetcher;
+export default TestFetcher;

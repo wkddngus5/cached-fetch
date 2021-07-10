@@ -28,23 +28,23 @@ class StoredFetcher {
     fetchParam: FetchParam,
     options: { maxAge: number } = { maxAge: 10 },
   ): Promise<{ data: unknown, cached: boolean }> {
-    const { url, method } = fetchParam;
+    const { uri, method } = fetchParam;
     const { maxAge } = options;
     if (method !== 'GET') {
       throw new Error('StoredFetcher applys onley GET method');
     }
-    const storedItem = this.storage.getItem(this.getItemKey(url));
+    const storedItem = this.storage.getItem(this.getItemKey(uri));
     if (storedItem && !StoredFetcher.isExpired(storedItem)) {
-      this.store({ key: this.getItemKey(url), data: storedItem.data, maxAge });
+      this.store({ key: this.getItemKey(uri), data: storedItem.data, maxAge });
       return { data: storedItem.data, cached: true };
     }
     const data = await this.fetcher.fetch(fetchParam);
-    this.store({ key: this.getItemKey(url), data, maxAge });
+    this.store({ key: this.getItemKey(uri), data, maxAge });
     return { data, cached: false };
   }
 
-  getItemKey(url: string) {
-    return `${this.key}__${url}`;
+  getItemKey(uri: string) {
+    return `${this.key}__${uri}`;
   }
 
   store({ key, data, maxAge }: { key: string, data: unknown, maxAge: number}) {
@@ -52,6 +52,10 @@ class StoredFetcher {
       data,
       expiredAt: StoredFetcher.generateExpiredDate(maxAge),
     });
+  }
+
+  discard({ key }: { key: string }) {
+    this.storage.removeItem(this.getItemKey(key));
   }
 }
 

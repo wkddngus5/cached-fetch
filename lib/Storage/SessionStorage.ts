@@ -27,6 +27,10 @@ class SessionStorage extends Storage {
   setItem(key: string, item: StoredItem) {
     this.core.setItem(key, JSON.stringify(item));
   }
+
+  removeItem(key: string) {
+    this.core.removeItem(key);
+  }
 }
 
 export default SessionStorage;

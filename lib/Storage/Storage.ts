@@ -8,6 +8,9 @@ abstract class Storage<StorageCore = unknown> {
 
   // eslint-disable-next-line no-unused-vars
   abstract setItem(key: string, item: StoredItem): void;
+
+  // eslint-disable-next-line no-unused-vars
+  abstract removeItem(key: string): void;
 }
 
 export default Storage;
