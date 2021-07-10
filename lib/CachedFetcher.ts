@@ -1,8 +1,8 @@
 import Fetcher, { FetchParam } from './Fetcher/Fetcher';
 import Storage from './Storage';
-import StoredItem from './StoredItem';
+import CachedItem from './CachedItem';
 
-class StoredFetcher {
+class CachedFetcher {
   readonly storage: Storage;
 
   readonly fetcher: Fetcher;
@@ -13,9 +13,9 @@ class StoredFetcher {
     return new Date(new Date().getTime() + maxAge * 1000);
   }
 
-  static isExpired(storedItem: StoredItem) {
-    return storedItem
-      && new Date(storedItem.expiredAt).valueOf() - new Date().valueOf() < 0;
+  static isExpired(cachedItem: CachedItem) {
+    return cachedItem
+      && new Date(cachedItem.expiredAt).valueOf() - new Date().valueOf() < 0;
   }
 
   constructor(storage: Storage, fetcher: Fetcher, key = 'STORED-FETCHER') {
@@ -31,15 +31,15 @@ class StoredFetcher {
     const { uri, method } = fetchParam;
     const { maxAge } = options;
     if (method !== 'GET') {
-      throw new Error('StoredFetcher applys onley GET method');
+      throw new Error('CachedFetcher applys onley GET method');
     }
-    const storedItem = this.storage.getItem(this.getItemKey(uri));
-    if (storedItem && !StoredFetcher.isExpired(storedItem)) {
-      this.store({ key: this.getItemKey(uri), data: storedItem.data, maxAge });
-      return { data: storedItem.data, cached: true };
+    const cachedItem = this.storage.getItem(this.getItemKey(uri));
+    if (cachedItem && !CachedFetcher.isExpired(cachedItem)) {
+      this.cache({ key: this.getItemKey(uri), data: cachedItem.data, maxAge });
+      return { data: cachedItem.data, cached: true };
     }
     const data = await this.fetcher.fetch(fetchParam);
-    this.store({ key: this.getItemKey(uri), data, maxAge });
+    this.cache({ key: this.getItemKey(uri), data, maxAge });
     return { data, cached: false };
   }
 
@@ -47,10 +47,10 @@ class StoredFetcher {
     return `${this.key}__${uri}`;
   }
 
-  store({ key, data, maxAge }: { key: string, data: unknown, maxAge: number}) {
+  cache({ key, data, maxAge }: { key: string, data: unknown, maxAge: number}) {
     this.storage.setItem(key, {
       data,
-      expiredAt: StoredFetcher.generateExpiredDate(maxAge),
+      expiredAt: CachedFetcher.generateExpiredDate(maxAge),
     });
   }
 
@@ -59,4 +59,4 @@ class StoredFetcher {
   }
 }
 
-export default StoredFetcher;
+export default CachedFetcher;

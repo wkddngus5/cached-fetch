@@ -1,21 +1,21 @@
 import cloneDeep from '../cloneDeep';
-import StoredItem from '../StoredItem';
+import CachedItem from '../CachedItem';
 import Storage from './Storage';
 
-class MapStorage extends Storage<Map<string, StoredItem>> {
-  core: Map<string, StoredItem>;
+class MapStorage extends Storage<Map<string, CachedItem>> {
+  core: Map<string, CachedItem>;
 
   constructor() {
     super();
-    this.core = new Map<string, StoredItem>();
+    this.core = new Map<string, CachedItem>();
   }
 
-  getItem(key: string): StoredItem {
+  getItem(key: string): CachedItem {
     const item = this.core.get(key);
     return item ? cloneDeep(item) : null;
   }
 
-  setItem(key: string, item: StoredItem): void {
+  setItem(key: string, item: CachedItem): void {
     this.core.set(key, cloneDeep(item));
   }
 

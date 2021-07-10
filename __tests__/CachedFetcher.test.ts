@@ -1,18 +1,18 @@
 import TestFetcher from '../lib/Fetcher/TestFetcher';
 import MapStorage from '../lib/Storage/MapStorage';
-import StoredFetcher from '../lib/StoredFetcher';
+import CachedFetcher from '../lib/CachedFetcher';
 
-describe('StoredFetcher', () => {
-  let storedFetcher: StoredFetcher;
+describe('CachedFetcher', () => {
+  let cachedFetcher: CachedFetcher;
   beforeAll(() => {
-    storedFetcher = new StoredFetcher(new MapStorage(), new TestFetcher());
+    cachedFetcher = new CachedFetcher(new MapStorage(), new TestFetcher());
   });
 
   it('contructor', async () => {
-    expect(storedFetcher).toBeTruthy();
+    expect(cachedFetcher).toBeTruthy();
   });
 
-  it('store', async () => {
+  it('cache', async () => {
     const body = {
       user: {
         id: 1,
@@ -21,13 +21,13 @@ describe('StoredFetcher', () => {
     };
 
     const uri = `www.test.com?body=${JSON.stringify(body)}`;
-    const response1 = await storedFetcher.fetch({
+    const response1 = await cachedFetcher.fetch({
       uri,
       method: 'GET',
       headers: {},
     });
     expect(response1.cached).toBeFalsy();
-    const response2 = await storedFetcher.fetch({
+    const response2 = await cachedFetcher.fetch({
       uri,
       method: 'GET',
       headers: {},
@@ -44,21 +44,21 @@ describe('StoredFetcher', () => {
       },
     };
     const uri = `www.test2.com?body=${JSON.stringify(body)}`;
-    const response1 = await storedFetcher.fetch({
+    const response1 = await cachedFetcher.fetch({
       uri,
       method: 'GET',
       headers: {},
     });
     expect(response1.cached).toBeFalsy();
-    const response2 = await storedFetcher.fetch({
+    const response2 = await cachedFetcher.fetch({
       uri,
       method: 'GET',
       headers: {},
     });
     expect(response2).toBeTruthy();
 
-    storedFetcher.discard({ key: uri });
-    const response3 = await storedFetcher.fetch({
+    cachedFetcher.discard({ key: uri });
+    const response3 = await cachedFetcher.fetch({
       uri,
       method: 'GET',
       headers: {},

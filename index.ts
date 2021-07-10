@@ -1,1 +1,1 @@
-module.exports = require('./lib/StoredFetcher');
+module.exports = require('./lib/CachedFetcher');
