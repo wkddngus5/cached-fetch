@@ -1,6 +1,7 @@
 import Fetcher, { FetchParam } from './Fetcher/Fetcher';
-import Storage from './Storage';
+import Storage, { SessionStorage } from './Storage';
 import CachedItem from './CachedItem';
+import HTMLFetcher from './Fetcher/HTMLFetcher';
 
 class CachedFetcher {
   readonly storage: Storage;
@@ -18,7 +19,7 @@ class CachedFetcher {
       && new Date(cachedItem.expiredAt).valueOf() - new Date().valueOf() < 0;
   }
 
-  constructor(storage: Storage, fetcher: Fetcher, key = 'STORED-FETCHER') {
+  constructor(storage: Storage = new SessionStorage(), fetcher: Fetcher = new HTMLFetcher(), key = 'STORED-FETCHER') {
     this.storage = storage;
     this.fetcher = fetcher;
     this.key = key;

@@ -24,13 +24,11 @@ describe('CachedFetcher', () => {
     const response1 = await cachedFetcher.fetch({
       uri,
       method: 'GET',
-      headers: {},
     });
     expect(response1.cached).toBeFalsy();
     const response2 = await cachedFetcher.fetch({
       uri,
       method: 'GET',
-      headers: {},
     });
     expect(response2).toBeTruthy();
     expect(response1.data).toEqual(response2.data);
@@ -47,13 +45,11 @@ describe('CachedFetcher', () => {
     const response1 = await cachedFetcher.fetch({
       uri,
       method: 'GET',
-      headers: {},
     });
     expect(response1.cached).toBeFalsy();
     const response2 = await cachedFetcher.fetch({
       uri,
       method: 'GET',
-      headers: {},
     });
     expect(response2).toBeTruthy();
 
@@ -61,7 +57,6 @@ describe('CachedFetcher', () => {
     const response3 = await cachedFetcher.fetch({
       uri,
       method: 'GET',
-      headers: {},
     });
     expect(response3.cached).toBeFalsy();
   });

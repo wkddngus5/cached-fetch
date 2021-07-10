@@ -1,11 +1,11 @@
 import Fetcher, { FetchParam } from './Fetcher';
-import Url from './Uri';
+import Uri from './Uri';
 
 class TestFetcher extends Fetcher {
   core: { request?: FetchParam; response?: unknown } = {};
 
   fetch(fetchParam: FetchParam): Promise<unknown> {
-    const uri = new Url(fetchParam.uri);
+    const uri = new Uri(fetchParam.uri);
 
     this.core = {
       request: fetchParam,

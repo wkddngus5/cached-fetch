@@ -3,7 +3,7 @@ type Method = 'GET';
 export type FetchParam = {
   uri: string;
   method: Method;
-  headers: { [key: string]: unknown };
+  headers?: Headers;
 };
 
 abstract class Fetcher<
